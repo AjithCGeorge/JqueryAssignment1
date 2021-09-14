@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Jquery Assignment 1</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <link href="https://code.jquery.com/ui/1.10.4/themes/ui-lightness/jquery-ui.css" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+    <script src="https://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
+
+</head>
+<body style="background-image: linear-gradient(to right, #cf19a4,#12cc60);">
+<div class="container-fluid" style="padding-top:30px">
+    <h2 align="center">Personnel Information form</h2><br><br><br>
+<form name="reg">
+  <div class="row">
+    <div class="col-sm-3" style="font-weight: bold; font-size:16px">
+        <label for="fname">Enter your Name :</label><br><br>
+        <label for="email">Enter your Email Id :</label><br><br>
+        <label for="mno">Enter Mobile No. :</label><br><br>
+        <p>Date of Birth: <input type="text" id="datepick-1"></p><br><br>
+
+        <select id="countryList" style="width:150px">
+            <option value="" selected hidden>-- Select a Country --</option>
+            <option></option>
+        </select><br><br>
+        <button type="button" id="submit" class="btn btn-outline-light text-light">Submit</button>
+
+    </div>
+    <div class="col-sm-8" style="">
+        <input type="text" id="fname" name="fname" style="width:350px"><br><br>
+        <input type="text" id="email" name="email" style="width:350px"><br><br>
+        <input type="text" id="mno" name="mno" style="width:350px"><br><br>
+        Age : <input type="text" id="age" name="age"><br><br>
+    </div>
+
+  </div>
+</form>
+</div>
+
+ <script>
+   $(document).ready(function()
+   {
+
+            $.get("https://restcountries.eu/rest/v2/all", function(data, status){
+                console.log(data);
+                var country = new Array();
+
+                for (let i = 0; i<data.length; i++)
+                {
+                    country.push(data[i].name)
+                }
+<!--      document.getElementById("demo").innerHTML = country;-->
+                console.log(country)
+                $("#countryList").select2({
+                    data:country
+                });
+            });
+
+
+            $(function() {
+
+                $( "#datepick-1" ).datepicker({
+                    onSelect:function (value, ui)
+                    {
+                        var today=new Date();
+                        age=today.getFullYear() - ui.selectedYear;
+                        $("#age").val(age);
+                    },
+                    changeMonth:true,
+                    changeYear:true
+                    });
+            });
+        $("#submit").click(function()
+        {
+            let name=$("#fname").val();
+            if(name.length<2)
+            {
+                let nameVal=false;
+                alert("Enter a valid name")
+
+            }else
+            {
+                let nameVal=true;
+            }
+            let mail=$("#email").val();
+
+            var regex = /^([a-zA-Z0-9_\.\-\+])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
+            if(!regex.test(mail)) {
+             let emailVal=false;
+             alert("Enter a valid Email id");
+            }else
+            {
+                let emailVal=true;
+            }
+            const reMob = /^[6-9]\d{9}$/gi;
+            let mno=$("#mno").val();
+            if(!reMob.test(mno)) {
+             let mnoVal=false;
+             alert("Enter an Indian Number")
+            }else
+            {
+                let mnoVal=true;
+            }
+
+
+        });
+   });
+</script>
+
+
+</body>
+</html>
